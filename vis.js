@@ -1,3 +1,5 @@
+//ChatGPT used for some complex calculations of code in vis.js
+
 function createDynamicArt() {
     const svgArt = document.getElementById('svgArt');
 
