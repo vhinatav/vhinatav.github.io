@@ -4,60 +4,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Hinata Nozawa</title>
+    <title>HINATA NOZAWA</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <h1>HINATA NOZAWA</h1>
-        <p>Welcome to my personal website.</p>
-    </header>
+        <a href="index.html" class="logo">HINATA NOZAWA</a>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger-icon"></label>
+    
+        <nav class="menu">
+            <a href="index.html" class="menu-item">TOP</a>
+            <a href="#" id="workButton" class="menu-item">WORK</a>
+            <a href="visualizations.html" class="menu-item">IAT355_VISUALIZATIONS</a>
+        </nav>
+    </header>  
 
     <main>
-        <p>
-            Personal Introduction / About Me: <br>
-            Your name, major, and a brief description of your interets. <br>
+        <div class="content-container">
+            <div class="text-section">
+                <p2>HINATA NOZAWA</p2>
+                <p>
+                    Interested in creating UX designs that bridge the gap between digital and physical spaces, bringing joy to real-world interactions.
+                </p>
 
             &nbsp; <br>
-            
-            Education: <br>
-            List your current and previous educational institutions and any relevant courses. <br>    
-            
             &nbsp; <br>
-            
-            Skills: <br>
-            Highlight technical skills such as programming languages, software tools, etc. <br>  
-
+    
+                <p2>EDUCATION</p2>
+                <p>
+                    Simon Fraser University<br>
+                    <span class="p3">
+                        BA, Interactive Arts and Technology <br>
+                        Sep 2022 - Present
+                    </span>
+                </p>
+    
             &nbsp; <br>
-            
-            Experience: <br>
-            Include work experience, internships, or relevant projects. <br>  
-
             &nbsp; <br>
-            
-            Images: <br>
-            Include images that represent you or your work. <br>  
-
+    
+                <p2>SKILLS</p2>
+                <p>
+                    UI&UX Design / Visual Design <br>
+                    Adobe Creative Suite / Figma / HTML&CSS
+                </p>
+    
             &nbsp; <br>
-            
-            Contact Information: <br>
-            Provide a way for people to contact you, such as an email or LinkedIn profile. <br>  
-
             &nbsp; <br>
-            
-            Link to any other relevant portfolios: <br>
-            A link to your GitHub profile or any other relevant portfolios. <br>  
-        </p>
-
-         <div>
-            <a href="visualizations/practice.html">My visualizations</a>
-            <a href="visualizations/lewitt.html">Sol Lewitt SVG</a>
-            <p>Hi</p>
-         </div>
+    
+                <p2>EXPERIENCE</p2>
+                <p>
+                    Marketing/Creative Lead <br>
+                    <span class="p3">
+                        Canada Student Kyudo Club <br>
+                        Sep 2023 - May 2024 <br>
+                    </span>
+                    &nbsp; <br>
+                    Graphic Designer <br>
+                    <span class="p3">
+                        SFU Japanese Network <br>
+                        Sep 2022 - Jan 2024
+                    </span>
+                </p>
+    
+            &nbsp; <br>
+            &nbsp; <br>
+            &nbsp; <br>
+            &nbsp; <br>
+        
+            <button id="contactButton">CONTACT</button>
+        </div>
+        <div class="image-section">
+            <img src="img/portrait.jpg" alt="A photo of Hinata Nozawa" class="profile-image">
+        </div>
     </main>
 
     <script src="main.js"></script>
 </body>
-
 </html>

@@ -1,7 +1,7 @@
-// Simple interactive script for the website
-document.addEventListener('DOMContentLoaded', function() {
-    const header = document.querySelector('header');
-    header.addEventListener('click', function() {
-        alert('Hello, welcome to my personal website!');
-    });
+document.getElementById('contactButton').addEventListener('click', function() {
+    alert('Thank you for your interest! Feel free to contact me at vhinatav@gmail.com.');
+});
+
+document.getElementById('workButton').addEventListener('click', function() {
+    alert('The "WORK" page is currently under maintenance. Please visit again later.');
 });
