@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HINATA NOZAWA</title>
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +27,22 @@
     </header>
 
     <main>
-        <!--
+        <!-- A3 -->
+        <p> ASSIGNMENT 3 </p>
+        <section id="global-sales-by-genre"></section>
+        <section id="global-sales-by-platform-bar"></section>
+        <section id="global-sales-by-platform-pie"></section>
+        <section id="sales-over-time-genre"></section>
+        <section id="sales-over-time-platform"></section>
+        <section id="vega-visualization-regional-sales-platform"></section>
+        <section id="vega-visualization-platform-sales-region"></section>
+        <section id="vega-visualization-game-releasement-year"></section>
+        <section id="vega-visualization-global-sales-year"></section>
+        <section id="vega-visualization-regional-sales-year"></section>
+        <section id="vega-visualization-japan-sales-nintendo-releases"></section>   
+
+        <!-- A2 -->
+        <p> ASSIGNMENT 2 </p>
         <p> *Click to interact with the SVG art on the right. </p>
         <svg width="500" height="500">
             <line x1="48" y1="390" x2="476" y2="390" stroke="black" opacity="0.1" stroke-width="1" />
@@ -61,20 +81,191 @@
 
         <svg id="svgArt" width="500" height="500">
         </svg>
-        -->
-
-        <div class="image-section"></div>
-            <img src="img/11.png" alt="IAT355_Assignment3_HinataNozawa" class="profile-image">
-            <img src="img/12.png" alt="IAT355_Assignment3_HinataNozawa" class="profile-image">
-            <img src="img/13.png" alt="IAT355_Assignment3_HinataNozawa" class="profile-image">
-            <img src="img/14.png" alt="IAT355_Assignment3_HinataNozawa" class="profile-image">
-            <img src="img/15.png" alt="IAT355_Assignment3_HinataNozawa" class="profile-image">
-            <img src="img/16.png" alt="IAT355_Assignment3_HinataNozawa" class="profile-image">
-            <img src="img/17.png" alt="IAT355_Assignment3_HinataNozawa" class="profile-image">
-        </div>
-        
     </main>
 
     <script src="vis.js"></script>
+
+    <script>
+        d3.csv('videogames_long.csv').then(data => {
+            data.forEach(d => {
+                d.sales_amount = +d.sales_amount;
+            });
+
+            // VIS1: Global Sales by Genre
+            const genreSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Global Sales by Genre",
+                "data": { "values": data },
+                "mark": "bar",
+                "encoding": {
+                    "x": { "field": "genre", "type": "nominal", "title": "Genre" },
+                    "y": { "field": "sales_amount", "type": "quantitative", "aggregate": "sum", "title": "Sales" },
+                    "tooltip": { "field": "sales_amount", "type": "quantitative", "aggregate": "sum" }
+                }
+            };
+            vegaEmbed('#global-sales-by-genre', genreSpec).catch(console.error);
+
+            // VIS2: Global Sales by Platform
+            const platformSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Global Sales by Platform",
+                "data": { "values": data },
+                "mark": "bar",
+                "encoding": {
+                    "x": { "field": "platform", "type": "nominal", "title": "Platform" },
+                    "y": { "field": "sales_amount", "type": "quantitative", "aggregate": "sum", "title": "Sales" },
+                    "tooltip": { "field": "sales_amount", "type": "quantitative", "aggregate": "sum" }
+                }
+            };
+            vegaEmbed('#global-sales-by-platform-bar', platformSpec).catch(console.error);
+
+            // VIS3: Global Sales by Platform (Pie Chart)
+            const salesByPlatformSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Global Sales by Platform",
+                "data": { "values": data },
+                "mark": "arc",
+                "encoding": {
+                    "theta": { "field": "sales_amount", "aggregate": "sum" },
+                    "color": { "field": "platform", "type": "nominal", "title": "Platform" },
+                    "tooltip": { "field": "platform", "type": "nominal" }
+                }
+            };
+            vegaEmbed('#global-sales-by-platform-pie', salesByPlatformSpec).catch(console.error);
+
+            // VIS4: Sales Over Time by Genre
+            const salesOverTimeGenreSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Sales Over Time by Genre",
+                "data": { "values": data },
+                "mark": "line",
+                "encoding": {
+                    "x": { "field": "year", "type": "temporal", "title": "Year" },
+                    "y": { "field": "sales_amount", "aggregate": "sum", "type": "quantitative", "title": "Sales" },
+                    "color": { "field": "genre", "type": "nominal", "title": "Genre" },
+                    "tooltip": { "field": "genre", "type": "nominal" }
+                }
+            };
+            vegaEmbed('#sales-over-time-genre', salesOverTimeGenreSpec).catch(console.error);
+
+            // VIS5: Sales Over Time by Platform
+            const salesOverTimePlatformSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Sales Over Time by Platform",
+                "data": { "values": data },
+                "mark": "line",
+                "encoding": {
+                    "x": { "field": "year", "type": "temporal", "title": "Year" },
+                    "y": { "field": "sales_amount", "aggregate": "sum", "type": "quantitative", "title": "Sales" },
+                    "color": { "field": "platform", "type": "nominal", "title": "Platform" },
+                    "tooltip": { "field": "platform", "type": "nominal" }
+                }
+            };
+            vegaEmbed('#sales-over-time-platform', salesOverTimePlatformSpec).catch(console.error);
+
+            // VIS6: Regional Sales by Platform
+            const regionalSalesByPlatformSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Regional Sales by Platform",
+                "data": { "values": data },
+                "mark": "arc",
+                "encoding": {
+                    "theta": { "field": "sales_amount", "aggregate": "sum" },
+                    "color": { "field": "sales_region", "type": "nominal", "title": "Region" },
+                    "tooltip": { "field": "sales_region", "type": "nominal" },
+                    "facet": { "field": "platform", "columns": 4, "title": "Platform" }
+                },
+                "width": 200
+            };
+            vegaEmbed('#vega-visualization-regional-sales-platform', regionalSalesByPlatformSpec).catch(console.error);
+
+            // VIS7: Platform Sales by Region
+            const platformSalesByRegionSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Platform Sales by Region",
+                "data": { "values": data },
+                "mark": "arc",
+                "encoding": {
+                    "theta": { "field": "sales_amount", "aggregate": "sum" },
+                    "color": { "field": "platform", "type": "nominal", "title": "Platform" },
+                    "tooltip": { "field": "platform", "type": "nominal" },
+                    "facet": { "field": "sales_region", "columns": 2, "title": "Region" }
+                },
+                "width": 200
+            };
+            vegaEmbed('#vega-visualization-platform-sales-region', platformSalesByRegionSpec).catch(console.error);
+
+            // VIS8: Game Releasement by Year
+            const gameReleasementYearSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Game Releasement by Year",
+                "data": { "values": data },
+                "mark": "line",
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal", "title": "Year" },
+                    "y": { "field": "name", "aggregate": "count", "type": "quantitative", "title": "Releasement" }
+                }
+            };
+            vegaEmbed('#vega-visualization-game-releasement-year', gameReleasementYearSpec).catch(console.error);
+
+            // VIS9: Global Sales by Year
+            const globalSalesYearSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Global Sales by Year",
+                "data": { "values": data },
+                "mark": "line",
+                "encoding": {
+                    "y": { "field": "sales_amount", "aggregate": "sum", "type": "quantitative", "title": "Global Sales" },
+                    "x": { "field": "year", "type": "temporal", "title": "Year" }
+                }
+            };
+            vegaEmbed('#vega-visualization-global-sales-year', globalSalesYearSpec).catch(console.error);
+
+            // VIS10: Regional Sales by Year
+            const regionalSalesYearSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Regional Sales by Year",
+                "data": { "values": data },
+                "mark": "line",
+                "encoding": {
+                    "y": { "field": "sales_amount", "aggregate": "sum", "type": "quantitative", "title": "Regional Sales" },
+                    "x": { "field": "year", "type": "temporal", "title": "Year" },
+                    "color": { "field": "sales_region", "type": "nominal", "title": "Region" },
+                    "tooltip": { "field": "sales_region", "type": "nominal" }
+                }
+            };
+            vegaEmbed('#vega-visualization-regional-sales-year', regionalSalesYearSpec).catch(console.error);
+
+            // VIS11: Japan Sales and Nintendo Game Releasement by Year
+            const nintendoData = data.filter(d => d.publisher === "Nintendo");
+            const japanSalesData = data.filter(d => d.sales_region === "jp_sales");
+
+            const japanNintendoSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Japan Sales and Nintendo Game Releasement by Year",
+                "data": { "values": data },
+                "layer": [
+                    {
+                        "mark": { "type": "line", "color": "orange" },
+                        "encoding": {
+                            "x": { "field": "year", "type": "ordinal", "title": "Year" },
+                            "y": { "field": "sales_amount", "aggregate": "sum", "type": "quantitative", "title": "Japan Sales" },
+                            "data": { "values": japanSalesData }
+                        }
+                    },
+                    {
+                        "mark": "line",
+                        "encoding": {
+                            "x": { "field": "year", "type": "ordinal", "title": "Year" },
+                            "y": { "field": "name", "aggregate": "count", "type": "quantitative", "title": "Nintendo Game Releasement" },
+                            "data": { "values": nintendoData }
+                        }
+                    }
+                ]
+            };
+            vegaEmbed('#vega-visualization-japan-sales-nintendo-releases', japanNintendoSpec).catch(console.error);
+
+        });
+    </script>
 </body>
 </html>
