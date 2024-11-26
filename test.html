@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HINATA NOZAWA</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <a href="index.html" class="logo">HINATA NOZAWA</a>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger-icon"></label>
+    
+        <nav class="menu">
+            <a href="index.html" class="menu-item">TOP</a>
+            <a href="#" id="workButton" class="menu-item">WORK</a>
+            <a href="visualizations.html" class="menu-item">IAT355_ASSIGNMENTS</a>
+        </nav>
+    </header>
+
+    <main>
+        <p>VIS 1 (Showing that fast fashion market/sales is growing)</p>
+        <section id="fast-fashion-sales"></section>
+        <p>VIS 2 (Showing that social media use is increasing) *it might be better to add another visualization showing how social media interaction is influencing user's fashion purchase </p>
+        <section id="social-media-use"></section>
+        <p>VIS 3</p>
+        <section id="environmental-issue"></section>
+    </main>
+
+    <script src="vis.js"></script>
+
+    <script>
+        d3.csv('fastfashion_marketsize.csv').then(data => {
+            data.forEach(d => {
+                d.revenue = +d.revenue;
+            });
+            const genreSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Fast Fasion Market Growth and Forecast (Global)",
+                "data": { "values": data },
+                "mark": { "type": "line", "color": "#cca86b", 
+                            "point": {"filled": true, "fill": "#7b3f61",}
+                        },
+                "width": 800,
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal", "title": "Year", "axis": { "labelAngle": 0 } },
+                    "y": { "field": "revenue", "type": "quantitative", "aggregate": "sum", "title": "Market Size (in billion $)" },
+                    "tooltip": { "field": "revenue", "type": "quantitative", "aggregate": "sum" }
+                }
+            };
+            vegaEmbed('#fast-fashion-sales', genreSpec).catch(console.error);
+        });
+
+        d3.csv('dailytimespent.csv').then(data => {
+            data.forEach(d => {
+                d.time = +d.time;
+            });
+            const platformSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Daily Social Media Usage (Global)",
+                "data": { "values": data},
+                "mark": {"type":"bar", "color": "#cca86b"},
+                "height":300,
+                "width": 800,
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal", "title": "Year", "axis": { "labelAngle": 0 }  },
+                    "y": { "field": "time", "type": "quantitative", "aggregate": "sum", "title": "Time Spent (in minute)" },
+                    "tooltip": { "field": "time", "type": "quantitative", "aggregate": "sum" }
+                }
+            };
+            vegaEmbed('#social-media-use', platformSpec).catch(console.error);
+        });
+
+        d3.csv('dailytimespent.csv').then(data => {
+            data.forEach(d => {
+                d.time = +d.time;
+            });
+            const salesByPlatformSpec = {
+                "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+                "title": "Environmental Issue",
+                "data": { "values": data },
+                "mark": "arc",
+                "width": 800,
+                "encoding": {
+                    "theta": { "field": "sales_amount", "aggregate": "sum" },
+                    "color": { "field": "platform", "type": "nominal", "title": "Platform" },
+                    "tooltip": { "field": "platform", "type": "nominal" }
+                }
+            };
+            vegaEmbed('#environmental-issue', salesByPlatformSpec).catch(console.error);
+        });
+    </script>
+</body>
+</html>
